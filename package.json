@@ -1,0 +1,44 @@
+{
+  "name": "csp-parser",
+  "version": "0.1.0",
+  "description": "a simple csp algebra parser",
+  "main": "lib/tokenizer.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node node_modules/standard/bin/cmd.js src/**/*.js && gulp && node_modules/mocha/bin/mocha --compilers js:babel/register"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BuggyOrg/CSPParser.git"
+  },
+  "keywords": [
+    "csp",
+    "parser"
+  ],
+  "author": "Georg Schuppe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BuggyOrg/CSPParser/issues"
+  },
+  "homepage": "https://github.com/BuggyOrg/CSPParser#readme",
+  "devDependencies": {
+    "babel": "^5.8.23",
+    "babel-eslint": "^4.1.3",
+    "chai": "^3.3.0",
+    "gulp": "^3.9.0",
+    "gulp-babel": "^5.2.1",
+    "gulp-peg": "^0.1.2",
+    "gulp-util": "^3.0.6",
+    "mocha": "^2.3.3",
+    "pegjs": "^0.9.0",
+    "standard": "~5.3.1"
+  },
+  "dependencies": {
+    "ramda": "^0.18.0"
+  },
+  "standard": {
+    "parser": "babel-eslint"
+  }
+}

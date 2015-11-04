@@ -1,0 +1,61 @@
+lines
+  = line*
+
+line
+  = definition
+
+definition "definition"
+= _ p:process _ "=" _ t:term _ { return ["def", p, t] }
+
+term "term"
+  = head:paranthesisTerm _ op:infixOp _ tail:term { return  [op, head, tail] }
+  / head:paranthesisTerm _ op:hideOp _ tail:event { return  ["hide", head, tail] }
+  / head:thenTerm _ op:choiceOp _ tail:thenTerm { return  ["choice", head, tail] }
+  / head:label ":" tail:process { return  ["label", head, tail] }
+  / head:label ":" tail:paranthesisTerm { return  ["label", head, tail] }
+  / thenTerm
+  / process
+
+thenTerm "special Case for then Terms"
+  = head:event _ op:thenOp _ tail:process { return  [op, head, tail] }
+  / head:event _ op:thenOp _ tail:thenTerm { return  [op, head, tail] }
+
+paranthesisTerm
+  = "(" t:term ")" { return t }
+    / process
+
+thenOp =
+  ("→" / "->") { switch(text()){
+    case "→": return "then"
+    case "->": return "then"
+  }
+}
+
+hideOp "hide Operator"
+  = "\\"
+
+choiceOp "choice Operator"
+  = "|"
+
+infixOp =
+  ("||" / "<<" / "□" / "⬜" ) { switch(text()){
+    case "||": return "parallel"
+    case "<<": return "chain"
+    case "□": return "gchoice"
+    case "⬜": return "gchoice"
+  }
+}
+
+process "process"
+  = c:[A-Z] w:char* { return c+w.join('') }
+
+event "event"
+  = c:[a-z] w:char* { return c+w.join('') }
+
+label "label"
+  = w:char+ { return w.join('') }
+
+char "character"
+  = [a-zA-Z]
+
+_ "whitespace" = [ \t\n\r]* { return null }
