@@ -6,6 +6,7 @@ line
 
 definition "definition"
 = _ p:process _ "=" _ t:term _ { return ["def", p, t] }
+/ _ alphabet:label _ p:paranthesisTerm { return ["alphabet", alphabet, p] }
 
 term "term"
   = head:paranthesisTerm _ op:infixOp _ tail:term { return  [op, head, tail] }
@@ -38,11 +39,11 @@ choiceOp "choice Operator"
   = "|"
 
 infixOp =
-  ("||" / "<<" / "□" / "⬜" ) { switch(text()){
+  ("||" / ">>" / "□" / "⨅") { switch(text()){
     case "||": return "parallel"
-    case "<<": return "chain"
+    case ">>": return "chain"
     case "□": return "gchoice"
-    case "⬜": return "gchoice"
+    case "⨅": return "nchoice"
   }
 }
 

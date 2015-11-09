@@ -10,8 +10,8 @@ describe('CSP parser', function () {
     expect(function () { tok('P = e') }).to.throw(Error)
   })
   it('then operator', function () {
-    var defs = tok('P = m -> P')
-    expect(defs).to.deep.equal([['def', 'P', ['then', 'm', 'P']]])
+    var defs = tok('A = m -> P')
+    expect(defs).to.deep.equal([['def', 'A', ['then', 'm', 'P']]])
     expect(function () { tok('P = Q -> P') }).to.throw(Error)
   })
   it('choice operator', function () {
@@ -28,8 +28,14 @@ describe('CSP parser', function () {
     expect(defs).to.deep.equal([['def', 'Q', ['hide', 'P', 'x']]])
   })
   it('infix operators', function () {
-    var defs = tok('P = P << Q')
+    var defs = tok('P = P >> Q')
+    var defs2 = tok('P = P ⨅ Q')
     expect(defs).to.deep.equal([['def', 'P', ['chain', 'P', 'Q']]])
-    expect(function () { tok('P = w << P') }).to.throw(Error)
+    expect(defs2).to.deep.equal([['def', 'P', ['nchoice', 'P', 'Q']]])
+    expect(function () { tok('P = w >> P') }).to.throw(Error)
+  })
+  it('alphabet operator', function () {
+    var defs = tok('alpha(m -> P)')
+    expect(defs).to.deep.equal([['alphabet', 'alpha', ['then', 'm', 'P']]])
   })
 })
