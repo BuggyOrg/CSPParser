@@ -30,7 +30,7 @@ describe('CSP parser', function () {
   it('infix operators', function () {
     var defs = tok('P = P >> Q')
     var defs2 = tok('P = P ⨅ Q')
-    expect(defs).to.deep.equal([['def', 'P', ['chain', 'P', 'Q']]])
+    expect(defs).to.deep.equal([['def', 'P', ['pipe', 'P', 'Q']]])
     expect(defs2).to.deep.equal([['def', 'P', ['nchoice', 'P', 'Q']]])
     expect(function () { tok('P = w >> P') }).to.throw(Error)
   })

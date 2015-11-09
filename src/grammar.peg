@@ -12,8 +12,6 @@ term "term"
   = head:paranthesisTerm _ op:infixOp _ tail:term { return  [op, head, tail] }
   / head:paranthesisTerm _ op:hideOp _ tail:event { return  ["hide", head, tail] }
   / head:thenTerm _ op:choiceOp _ tail:thenTerm { return  ["choice", head, tail] }
-  / head:label ":" tail:process { return  ["label", head, tail] }
-  / head:label ":" tail:paranthesisTerm { return  ["label", head, tail] }
   / thenTerm
   / process
 
@@ -39,16 +37,18 @@ choiceOp "choice Operator"
   = "|"
 
 infixOp =
-  ("||" / ">>" / "□" / "⨅") { switch(text()){
+  ("||" / ">>" / "□" / "⨅" / "//") { switch(text()){
     case "||": return "parallel"
-    case ">>": return "chain"
+    case ">>": return "pipe"
     case "□": return "gchoice"
     case "⨅": return "nchoice"
+    case "//": return "subordinate"
   }
 }
 
 process "process"
   = c:[A-Z] w:char* { return c+w.join('') }
+    / head:label ":" tail:process { return  ["label", head, tail] }
 
 event "event"
   = c:[a-z] w:char* { return c+w.join('') }
