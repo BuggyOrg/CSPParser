@@ -1,6 +1,6 @@
 {
   "name": "csp-parser",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "a simple csp algebra parser",
   "main": "lib/tokenizer.js",
   "directories": {
