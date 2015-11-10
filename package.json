@@ -3,6 +3,7 @@
   "version": "0.1.2",
   "description": "a simple csp algebra parser",
   "main": "lib/tokenizer.js",
+  "jsnext:main": "src/my-package.es6.js",
   "directories": {
     "test": "test"
   },
