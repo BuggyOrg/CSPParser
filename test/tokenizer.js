@@ -19,8 +19,8 @@ describe('CSP parser', function () {
     expect(defs).to.deep.equal([['def', 'P', ['choice', ['then', 'a', 'P'], ['then', 'b', 'Q']]]])
   })
   it('label operator', function () {
-    var defs = tok('Q = test:P')
-    expect(defs).to.deep.equal([['def', 'Q', ['label', 'test', 'P']]])
+    var defs = tok('Q = test1:P')
+    expect(defs).to.deep.equal([['def', 'Q', ['label', 'test1', 'P']]])
     expect(function () { tok('Q = test : P') }).to.throw(Error)
   })
   it('hide operator', function () {
@@ -30,6 +30,8 @@ describe('CSP parser', function () {
   it('infix operators', function () {
     var defs = tok('P = P >> Q')
     var defs2 = tok('P = P ⨅ Q')
+    var defs3 = tok('Main = s1:STDIN // s2:STDIN // ADD')
+    expect(defs3).to.deep.equal([['def', 'Main', ['subordinate', ['label', 's1', 'STDIN'], ['subordinate', ['label', 's2', 'STDIN'], 'ADD']]]])
     expect(defs).to.deep.equal([['def', 'P', ['pipe', 'P', 'Q']]])
     expect(defs2).to.deep.equal([['def', 'P', ['nchoice', 'P', 'Q']]])
     expect(function () { tok('P = w >> P') }).to.throw(Error)

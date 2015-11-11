@@ -54,9 +54,12 @@ event "event"
   = c:[a-z] w:char* { return c+w.join('') }
 
 label "label"
-  = w:char+ { return w.join('') }
+  = w:labelCharAndNumber+ { return w.join('') }
 
 char "character"
   = [a-zA-Z]
+
+labelCharAndNumber "number"
+  = [a-zA-Z0-9]
 
 _ "whitespace" = [ \t\n\r]* { return null }
